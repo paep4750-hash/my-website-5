@@ -1,513 +1,728 @@
 <!DOCTYPE html>
-<html lang="th" class="dark">
+<html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Server Support & Console</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#0b0f19',
-                        darkCard: '#111827',
-                        darkSidebar: '#0d111d',
-                        darkInput: '#1f2937',
-                        accent: '#3b82f6',
-                        secretAccent: '#6366f1'
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0b0f19;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #374151;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4b5563;
-        }
-    </style>
-</head>
-<body class="bg-darkBg text-gray-200 font-sans antialiased h-screen flex flex-col md:flex-row overflow-hidden select-none">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark Chat</title>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --sidebar-bg: #111827;
+      --chat-bg: #0f172a;
+      --card-active: #1e293b;
+      --accent-blue: #2563eb;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #1e293b;
+      --msg-other: #1e293b;
+      --msg-my: #2563eb;
+      --danger-color: #7f1d1d;
+      --danger-hover: #991b1b;
+    }
 
-    <!-- Mobile Header -->
-    <div class="md:hidden bg-darkSidebar border-b border-gray-800 p-4 flex justify-between items-center z-20">
-        <div>
-            <div id="mobileDateHeader" class="text-xs text-gray-400 font-mono">กำลังโหลด...</div>
-            <button id="mobileSecretBtn" class="text-sm font-semibold text-gray-200 hover:text-white transition flex items-center gap-2 mt-0.5">
-                <i class="fa-solid me-1 fa-headset text-blue-500"></i> ติดต่อผู้สร้างเซิร์ฟเวอร์
-            </button>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .app-container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      background-color: var(--chat-bg);
+    }
+
+    /* --- SIDEBAR --- */
+    .sidebar {
+      width: 320px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .top-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .status-badge {
+      background-color: #064e3b;
+      color: #34d399;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .main-title-box {
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .main-title-box:hover {
+      background-color: var(--card-active);
+    }
+
+    .main-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-main);
+    }
+
+    .main-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Category List */
+    .category-section {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .add-cat-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .add-cat-btn:hover {
+      background-color: var(--card-active);
+      color: var(--text-main);
+    }
+
+    .category-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .category-item:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+    }
+
+    .category-item.active {
+      background-color: var(--card-active);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-weight: 600;
+    }
+
+    /* Sidebar Footer */
+    .sidebar-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .clear-all-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: transparent;
+      border: 1px solid var(--danger-color);
+      color: #f87171;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .clear-all-btn:hover {
+      background-color: var(--danger-color);
+      color: #ffffff;
+    }
+
+    /* --- CHAT AREA --- */
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--chat-bg);
+    }
+
+    .chat-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--sidebar-bg);
+    }
+
+    .chat-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .chat-title-text {
+      font-weight: 700;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chat-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .clear-this-btn {
+      background-color: #331e08;
+      border: 1px solid #78350f;
+      color: #fbbf24;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .clear-this-btn:hover {
+      background-color: #78350f;
+      color: #ffffff;
+    }
+
+    /* Messages Display */
+    .messages-container {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .message-wrapper {
+      display: flex;
+      flex-direction: column;
+      max-width: 65%;
+    }
+
+    .message-wrapper.my {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .message-wrapper.other {
+      align-self: flex-start;
+      align-items: flex-start;
+    }
+
+    .message-bubble {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .message-wrapper.my .message-bubble {
+      background-color: var(--msg-my);
+      color: #ffffff;
+      border-bottom-right-radius: 2px;
+    }
+
+    .message-wrapper.other .message-bubble {
+      background-color: var(--msg-other);
+      color: var(--text-main);
+      border-bottom-left-radius: 2px;
+    }
+
+    .message-time {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Input Footer */
+    .chat-input-area {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-color);
+      background-color: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .role-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+
+    .role-label {
+      color: var(--text-muted);
+    }
+
+    .role-btn {
+      background-color: var(--card-active);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .role-btn.active {
+      background-color: rgba(37, 99, 235, 0.2);
+      border-color: var(--accent-blue);
+      color: #60a5fa;
+      font-weight: 600;
+    }
+
+    .input-box-wrapper {
+      display: flex;
+      gap: 12px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text-main);
+      outline: none;
+      font-size: 0.95rem;
+    }
+
+    .chat-input:focus {
+      border-color: var(--accent-blue);
+    }
+
+    .send-btn {
+      background-color: var(--accent-blue);
+      color: white;
+      border: none;
+      padding: 0 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+
+    .send-btn:hover {
+      opacity: 0.9;
+    }
+
+    .sync-text {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        height: 40vh;
+      }
+      .chat-area {
+        height: 60vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div>
+        <div class="sidebar-header">
+          <div class="top-status">
+            <span id="currentDateText">วันนี้: พฤหัส 30 ก.ค. 2569</span>
+            <span class="status-badge">Online</span>
+          </div>
+          <div class="main-title-box" onclick="selectCategory('cat_default')">
+            <div class="main-title">
+              <i data-lucide="headphone-off" style="width: 18px; height: 18px; color: #60a5fa;"></i>
+              <span>ติดต่อผู้สร้างเซิร์ฟเวอร์</span>
+              <i data-lucide="chevron-right" style="width: 16px; height: 16px; color: var(--text-muted); margin-left: auto;"></i>
+            </div>
+            <div class="main-subtitle">ช่องทางติดต่อสอบถามและแจ้งปัญหา</div>
+          </div>
         </div>
-        <button id="toggleMenuBtn" class="text-gray-400 hover:text-white p-2">
-            <i class="fa-solid fa-bars text-xl"></i>
+
+        <!-- หมวดหมู่แชทลับ -->
+        <div class="category-section">
+          <div class="category-header">
+            <span>หมวดหมู่แชทลับ</span>
+            <button class="add-cat-btn" onclick="addNewCategory()" title="เพิ่มหมวดหมู่ใหม่">
+              <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
+            </button>
+          </div>
+          <div class="category-list" id="categoryList">
+            <!-- หมวดหมู่จะถูกโหลดเข้ามาที่นี่ด้วย JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ปุ่มล้างทั้งหมด -->
+      <div class="sidebar-footer">
+        <button class="clear-all-btn" onclick="clearAllData()">
+          <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+          <span>ล้างข้อมูลแชททั้งหมด</span>
         </button>
+      </div>
     </div>
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition duration-200 ease-in-out z-30 w-72 bg-darkSidebar border-r border-gray-800 flex flex-col h-full">
-        <!-- Sidebar Header (หัวข้อเล็ก + หัวข้อใหญ่) -->
-        <div class="p-4 border-b border-gray-800/80 bg-slate-950/40">
-            <!-- หัวข้อเล็ก: วันนี้/แนววันนี้ -->
-            <div class="flex items-center justify-between mb-1">
-                <span id="currentDateDisplay" class="text-xs font-mono text-gray-400 tracking-wider">
-                    <!-- แสดงวันที่ปัจจุบัน -->
-                </span>
-                <span class="text-[10px] bg-emerald-950 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-800/50">Online</span>
+    <!-- CHAT AREA -->
+    <div class="chat-area">
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <div class="chat-title-group">
+          <div class="avatar-icon">
+            <i data-lucide="user-check" style="width: 20px; height: 20px;"></i>
+          </div>
+          <div>
+            <div class="chat-title-text">
+              <i data-lucide="headphone-off" style="width: 18px; height: 18px; color: #60a5fa;"></i>
+              <span id="activeCategoryTitle">ติดต่อผู้สร้างเซิร์ฟเวอร์</span>
             </div>
+            <div class="chat-subtitle" id="activeCategorySubtitle">หมวดหมู่: ติดต่อผู้สร้างเซิร์ฟเวอร์ (บันทึกข้อมูลแล้ว)</div>
+          </div>
+        </div>
+        <button class="clear-this-btn" onclick="clearCurrentCategoryChat()">
+          <i data-lucide="eraser" style="width: 14px; height: 14px;"></i>
+          <span>ล้างข้อมูลแชทนี้</span>
+        </button>
+      </div>
 
-            <!-- หัวข้อใหญ่: ติดต่อผู้สร้างเซิร์ฟเวอร์ (ปุ่มเปิด/สลับเข้าแชทลับ) -->
-            <button id="secretHeaderBtn" class="w-full text-left group transition-all duration-200 p-2 -mx-2 rounded-lg hover:bg-gray-800/50 active:scale-[0.98]">
-                <div class="text-base font-bold text-gray-100 group-hover:text-blue-400 flex items-center justify-between">
-                    <span class="flex items-center gap-2">
-                        <i class="fa-solid fa-headset text-blue-500 text-sm"></i>
-                        ติดต่อผู้สร้างเซิร์ฟเวอร์
-                    </span>
-                    <i class="fa-solid fa-chevron-right text-xs text-gray-600 group-hover:text-blue-400 transition-transform group-hover:translate-x-1"></i>
-                </div>
-                <p class="text-[11px] text-gray-500 mt-0.5">ช่องทางติดต่อสอบถามและแจ้งปัญหา</p>
+      <!-- Messages Display -->
+      <div class="messages-container" id="messagesContainer">
+        <!-- แชทจะแสดงที่นี่ -->
+      </div>
+
+      <!-- Chat Input Section -->
+      <div class="chat-input-area">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="role-selector">
+            <span class="role-label">บทบาทการพิมพ์:</span>
+            <button class="role-btn active" id="roleMyBtn" onclick="setRole('my')">
+              <i data-lucide="user" style="width: 12px; height: 12px;"></i>
+              <span>ฝั่งเรา</span>
             </button>
-        </div>
-
-        <!-- Categories & Chat List (การจัดหมวดหมู่แชท) -->
-        <div class="flex-1 overflow-y-auto p-3 space-y-4">
-            <div>
-                <div class="flex items-center justify-between px-2 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    <span>หมวดหมู่แชทลับ</span>
-                    <button id="addCategoryBtn" class="hover:text-blue-400 text-gray-500 transition p-1" title="เพิ่มหมวดหมู่ใหม่">
-                        <i class="fa-solid fa-plus"></i>
-                    </button>
-                </div>
-                
-                <!-- Category List Dynamic Container -->
-                <div id="categoryList" class="space-y-1">
-                    <!-- จะถูกสร้างผ่าน JS -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Sidebar Actions (ปุ่มล้างข้อมูลทั้งหมด) -->
-        <div class="p-3 border-t border-gray-800 bg-darkSidebar/50">
-            <button id="clearAllBtn" class="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs text-red-400 hover:text-red-300 hover:bg-red-950/30 border border-red-900/30 hover:border-red-800/50 rounded-lg transition duration-150">
-                <i class="fa-solid fa-trash-can"></i>
-                <span>ล้างข้อมูลแชททั้งหมด</span>
+            <button class="role-btn" id="roleOtherBtn" onclick="setRole('other')">
+              <i data-lucide="corner-up-left" style="width: 12px; height: 12px;"></i>
+              <span>ตอบกลับเรา</span>
             </button>
-        </div>
-    </aside>
-
-    <!-- Main Chat Area -->
-    <main class="flex-1 flex flex-col h-full bg-darkBg relative overflow-hidden">
-        
-        <!-- Top Chat Header -->
-        <header class="bg-darkCard/80 backdrop-blur border-b border-gray-800 p-3 px-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/10">
-                    <i class="fa-solid fa-[#fa-user-shield] fa-user-shield text-sm"></i>
-                </div>
-                <div>
-                    <h2 id="currentCategoryTitle" class="text-sm font-semibold text-gray-100 flex items-center gap-2">
-                        ติดต่อผู้สร้างเซิร์ฟเวอร์
-                    </h2>
-                    <span id="chatStatusText" class="text-[11px] text-gray-400">หมวดหมู่: ทั่วไป (บันทึกอัตโนมัติ)</span>
-                </div>
-            </div>
-
-            <!-- Actions Header (ล้างเฉพาะแชทนี้) -->
-            <div class="flex items-center gap-2">
-                <button id="clearCurrentChatBtn" class="flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-amber-400 hover:text-amber-300 bg-amber-950/20 hover:bg-amber-950/40 border border-amber-900/30 rounded-lg transition" title="ล้างข้อมูลแชทห้องนี้">
-                    <i class="fa-solid fa-eraser"></i>
-                    <span class="hidden sm:inline">ล้างข้อมูลแชทนี้</span>
-                </button>
-            </div>
-        </header>
-
-        <!-- Messages Container -->
-        <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-4">
-            <!-- Messages will be populated here dynamically -->
+          </div>
+          <div class="sync-text">
+            <i data-lucide="lock" style="width: 12px; height: 12px;"></i>
+            <span>บันทึกลงไดรฟ์เครื่องอัตโนมัติ</span>
+          </div>
         </div>
 
-        <!-- Input Area -->
-        <footer class="p-3 sm:p-4 bg-darkCard/90 border-t border-gray-800">
-            <form id="chatForm" class="flex flex-col gap-2 max-w-4xl mx-auto">
-                <!-- Message Role Switcher (สลับการพิมพ์: เราพิมพ์ หรือ ตอบกลับเรา) -->
-                <div class="flex items-center justify-between text-xs text-gray-400 px-1">
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-500">บทบาทการพิมพ์:</span>
-                        <div class="inline-flex rounded-lg p-0.5 bg-gray-800 border border-gray-700">
-                            <button type="button" id="roleUserBtn" class="px-2.5 py-1 rounded-md text-[11px] font-medium transition bg-blue-600 text-white shadow">
-                                <i class="fa-solid fa-user me-1"></i> ฝั่งเรา
-                            </button>
-                            <button type="button" id="roleOtherBtn" class="px-2.5 py-1 rounded-md text-[11px] font-medium transition text-gray-400 hover:text-gray-200">
-                                <i class="fa-solid fa-reply me-1"></i> ตอบกลับเรา
-                            </button>
-                        </div>
-                    </div>
-                    <span class="text-[10px] text-gray-500 italic hidden sm:inline"><i class="fa-solid fa-lock me-1"></i> บันทึกลงไดรฟ์เครื่องอัตโนมัติ</span>
-                </div>
+        <div class="input-box-wrapper">
+          <input type="text" id="messageInput" class="chat-input" placeholder="พิมพ์ข้อความที่ต้องการเก็บบันทึก..." onkeypress="handleKeyPress(event)">
+          <button class="send-btn" onclick="sendMessage()">
+            <span>ส่ง</span>
+            <i data-lucide="send" style="width: 14px; height: 14px;"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                <!-- Input Box & Send Button -->
-                <div class="flex gap-2 items-end">
-                    <div class="relative flex-1">
-                        <textarea id="messageInput" rows="1" placeholder="พิมพ์ข้อความที่ต้องการเก็บบันทึก..." class="w-full bg-darkInput text-gray-100 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-700/60 resize-none transition min-h-[46px] max-h-32 placeholder-gray-500"></textarea>
-                    </div>
-                    <button type="submit" class="h-[46px] px-5 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-medium rounded-xl transition duration-150 flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20">
-                        <span>ส่ง</span>
-                        <i class="fa-solid fa-paper-plane text-xs"></i>
-                    </button>
-                </div>
-            </form>
-        </footer>
-    </main>
+  <script>
+    // --- Data Management ---
+    const DEFAULT_CATEGORIES = [
+      { id: 'cat_default', name: 'ติดต่อผู้สร้างเซิร์ฟเวอร์', icon: 'headphone-off' },
+      { id: 'cat_code', name: 'โน้ตโค้ดลับ', icon: 'code-2' },
+      { id: 'cat_personal', name: 'บันทึกส่วนตัว', icon: 'landmark' }
+    ];
 
-    <!-- Overlay for Mobile Sidebar -->
-    <div id="sidebarOverlay" class="fixed inset-0 bg-black/60 z-20 hidden md:hidden"></div>
+    let categories = JSON.parse(localStorage.getItem('dark_chat_categories')) || DEFAULT_CATEGORIES;
+    let chats = JSON.parse(localStorage.getItem('dark_chat_messages')) || {
+      'cat_default': [
+        { sender: 'other', text: 'สวัสดีครับ มีอะไรให้ผู้ดูแลเซิร์ฟเวอร์ช่วยเหลือไหมครับ?', time: '10:00 AM' },
+        { sender: 'my', text: 'สอบถามเรื่องการจัดเก็บข้อมูลครับ', time: '10:01 AM' }
+      ]
+    };
 
-    <script>
-        // --- State Management ---
-        const STORAGE_KEY = 'DARK_CHAT_SECRET_DATA_V1';
+    let activeCategoryId = localStorage.getItem('dark_chat_active_cat') || 'cat_default';
+    let currentRole = 'my'; // 'my' หรือ 'other'
+
+    // --- Init Web App ---
+    window.onload = function() {
+      updateDateDisplay();
+      renderCategories();
+      renderMessages();
+      lucide.createIcons();
+    };
+
+    // แสดงวันที่ปัจจุบันแบบภาษาไทย
+    function updateDateDisplay() {
+      const now = new Date();
+      const days = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัส', 'ศุกร์', 'เสาร์'];
+      const months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+      
+      const dayName = days[now.getDay()];
+      const dayNum = now.getDate();
+      const monthName = months[now.getMonth()];
+      const yearBE = now.getFullYear() + 543;
+
+      document.getElementById('currentDateText').textContent = `วันนี้: ${dayName} ${dayNum} ${monthName} ${yearBE}`;
+    }
+
+    // --- Category Functions ---
+    function renderCategories() {
+      const categoryList = document.getElementById('categoryList');
+      categoryList.innerHTML = '';
+
+      categories.forEach(cat => {
+        const item = document.createElement('div');
+        item.className = `category-item ${cat.id === activeCategoryId ? 'active' : ''}`;
+        item.onclick = () => selectCategory(cat.id);
+
+        const iconName = cat.icon || 'folder';
+        item.innerHTML = `
+          <i data-lucide="${iconName}" style="width: 16px; height: 16px;"></i>
+          <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(cat.name)}</span>
+        `;
+        categoryList.appendChild(item);
+      });
+
+      lucide.createIcons();
+    }
+
+    function selectCategory(catId) {
+      activeCategoryId = catId;
+      localStorage.setItem('dark_chat_active_cat', catId);
+      
+      const activeCat = categories.find(c => c.id === catId) || { name: 'หมวดหมู่ลับ' };
+      document.getElementById('activeCategoryTitle').textContent = activeCat.name;
+      document.getElementById('activeCategorySubtitle').textContent = `หมวดหมู่: ${activeCat.name} (บันทึกข้อมูลแล้ว)`;
+
+      renderCategories();
+      renderMessages();
+    }
+
+    function addNewCategory() {
+      const catName = prompt('กรอกชื่อหมวดหมู่แชทลับใหม่:');
+      if (catName && catName.trim() !== '') {
+        const newId = 'cat_' + Date.now();
+        categories.push({
+          id: newId,
+          name: catName.trim(),
+          icon: 'folder'
+        });
+        chats[newId] = [];
         
-        let appData = {
-            categories: [
-                { id: 'cat_general', name: 'ติดต่อผู้สร้างเซิร์ฟเวอร์', icon: 'fa-headset' },
-                { id: 'cat_code', name: 'โน้ตโค้ดลับ', icon: 'fa-code' },
-                { id: 'cat_personal', name: 'บันทึกส่วนตัว', icon: 'fa-user-secret' }
-            ],
-            activeCategoryId: 'cat_general',
-            messages: {
-                'cat_general': [
-                    { id: 'm1', sender: 'other', text: 'สวัสดีครับ มีอะไรให้ผู้ดูแลเซิร์ฟเวอร์ช่วยเหลือไหมครับ?', time: '10:00 AM' },
-                ]
-            }
+        saveCategories();
+        saveChats();
+        selectCategory(newId);
+      }
+    }
+
+    // --- Message Functions ---
+    function renderMessages() {
+      const container = document.getElementById('messagesContainer');
+      container.innerHTML = '';
+
+      const currentChats = chats[activeCategoryId] || [];
+
+      currentChats.forEach(msg => {
+        const wrapper = document.createElement('div');
+        wrapper.className = `message-wrapper ${msg.sender}`;
+
+        wrapper.innerHTML = `
+          <div class="message-bubble">${escapeHtml(msg.text)}</div>
+          <div class="message-time">${msg.time}</div>
+        `;
+        container.appendChild(wrapper);
+      });
+
+      // Auto Scroll to bottom
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function setRole(role) {
+      currentRole = role;
+      const myBtn = document.getElementById('roleMyBtn');
+      const otherBtn = document.getElementById('roleOtherBtn');
+
+      if (role === 'my') {
+        myBtn.classList.add('active');
+        otherBtn.classList.remove('active');
+      } else {
+        otherBtn.classList.add('active');
+        myBtn.classList.remove('active');
+      }
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const text = input.value.trim();
+
+      if (text === '') return;
+
+      if (!chats[activeCategoryId]) {
+        chats[activeCategoryId] = [];
+      }
+
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      chats[activeCategoryId].push({
+        sender: currentRole,
+        text: text,
+        time: timeStr
+      });
+
+      saveChats();
+      renderMessages();
+      input.value = '';
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    }
+
+    // --- Clear Data Functions ---
+    function clearCurrentCategoryChat() {
+      if (confirm('คุณต้องการล้างข้อมูลแชทในหมวดหมู่นี้ใช่หรือไม่?')) {
+        chats[activeCategoryId] = [];
+        saveChats();
+        renderMessages();
+      }
+    }
+
+    function clearAllData() {
+      if (confirm('⚠️ เตือน: คุณต้องการล้างข้อมูลและหมวดหมู่ทั้งหมดกลับเป็นค่าเริ่มต้นใช่หรือไม่?')) {
+        localStorage.removeItem('dark_chat_categories');
+        localStorage.removeItem('dark_chat_messages');
+        localStorage.removeItem('dark_chat_active_cat');
+
+        categories = DEFAULT_CATEGORIES;
+        chats = {
+          'cat_default': [
+            { sender: 'other', text: 'สวัสดีครับ มีอะไรให้ผู้ดูแลเซิร์ฟเวอร์ช่วยเหลือไหมครับ?', time: '10:00 AM' },
+            { sender: 'my', text: 'สอบถามเรื่องการจัดเก็บข้อมูลครับ', time: '10:01 AM' }
+          ]
         };
+        activeCategoryId = 'cat_default';
 
-        let currentRole = 'user'; // 'user' (ฝั่งเรา) หรือ 'other' (เข้าร่วม discord ติดตามข่าว)
+        saveCategories();
+        saveChats();
+        selectCategory('cat_default');
+      }
+    }
 
-        // --- DOM Elements ---
-        const secretHeaderBtn = document.getElementById('secretHeaderBtn');
-        const mobileSecretBtn = document.getElementById('mobileSecretBtn');
-        const currentDateDisplay = document.getElementById('currentDateDisplay');
-        const mobileDateHeader = document.getElementById('mobileDateHeader');
-        const categoryList = document.getElementById('categoryList');
-        const addCategoryBtn = document.getElementById('addCategoryBtn');
-        const messagesContainer = document.getElementById('messagesContainer');
-        const chatForm = document.getElementById('chatForm');
-        const messageInput = document.getElementById('messageInput');
-        const roleUserBtn = document.getElementById('roleUserBtn');
-        const roleOtherBtn = document.getElementById('roleOtherBtn');
-        const currentCategoryTitle = document.getElementById('currentCategoryTitle');
-        const chatStatusText = document.getElementById('chatStatusText');
-        const clearCurrentChatBtn = document.getElementById('clearCurrentChatBtn');
-        const clearAllBtn = document.getElementById('clearAllBtn');
-        const toggleMenuBtn = document.getElementById('toggleMenuBtn');
-        const sidebar = document.getElementById('sidebar');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
+    // --- Storage Helpers ---
+    function saveCategories() {
+      localStorage.setItem('dark_chat_categories', JSON.stringify(categories));
+    }
 
-        // --- Init Function ---
-        function init() {
-            loadData();
-            setupDateDisplay();
-            renderCategories();
-            renderMessages();
-            setupEventListeners();
-        }
+    function saveChats() {
+      localStorage.setItem('dark_chat_messages', JSON.stringify(chats));
+    }
 
-        // --- Date Setup ---
-        function setupDateDisplay() {
-            const now = new Date();
-            const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
-            const formattedDate = now.toLocaleDateString('th-TH', options);
-            
-            currentDateDisplay.textContent = `วันนี้: ${formattedDate}`;
-            mobileDateHeader.textContent = formattedDate;
-        }
-
-        // --- LocalStorage Operations (บันทึกข้อมูลอัตโนมัติ) ---
-        function saveData() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-            } catch (e) {
-                console.error('Failed to save data to localStorage', e);
-            }
-        }
-
-        function loadData() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    appData = JSON.parse(saved);
-                }
-            } catch (e) {
-                console.error('Failed to load data from localStorage', e);
-            }
-        }
-
-        // --- Render UI Functions ---
-        function renderCategories() {
-            categoryList.innerHTML = '';
-
-            appData.categories.forEach(cat => {
-                const isActive = cat.id === appData.activeCategoryId;
-                const button = document.createElement('button');
-                button.className = `w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition duration-150 ${
-                    isActive 
-                        ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' 
-                        : 'text-gray-400 hover:bg-gray-800/60 hover:text-gray-200'
-                }`;
-                
-                button.innerHTML = `
-                    <div class="flex items-center gap-2 truncate">
-                        <i class="fa-solid ${cat.icon || 'fa-comments'} text-xs"></i>
-                        <span class="truncate">${escapeHtml(cat.name)}</span>
-                    </div>
-                    ${appData.categories.length > 1 ? `
-                        <i class="fa-solid fa-xmark delete-cat-btn opacity-0 group-hover:opacity-100 hover:text-red-400 p-1 text-[10px]" data-id="${cat.id}" title="ลบหมวดหมู่นี้"></i>
-                    ` : ''}
-                `;
-
-                button.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('delete-cat-btn')) {
-                        e.stopPropagation();
-                        deleteCategory(cat.id);
-                        return;
-                    }
-                    switchCategory(cat.id);
-                });
-
-                categoryList.appendChild(button);
-            });
-        }
-
-        function renderMessages() {
-            messagesContainer.innerHTML = '';
-            
-            const currentCat = appData.categories.find(c => c.id === appData.activeCategoryId);
-            if (currentCat) {
-                currentCategoryTitle.innerHTML = `<i class="fa-solid ${currentCat.icon || 'fa-comments'} text-blue-500"></i> ${escapeHtml(currentCat.name)}`;
-                chatStatusText.textContent = `หมวดหมู่: ${currentCat.name} (บันทึกข้อมูลแล้ว)`;
-            }
-
-            const currentMessages = appData.messages[appData.activeCategoryId] || [];
-
-            if (currentMessages.length === 0) {
-                messagesContainer.innerHTML = `
-                    <div class="h-full flex flex-col items-center justify-center text-gray-500 text-xs py-12">
-                        <div class="w-12 h-12 rounded-full bg-gray-800/50 flex items-center justify-center mb-2">
-                            <i class="fa-solid fa-message text-gray-600 text-lg"></i>
-                        </div>
-                        <p>ยังไม่มีข้อความในหมวดหมู่นี้</p>
-                        <p class="text-[11px] text-gray-600 mt-1">เริ่มพิมพ์ข้อความเพื่อบันทึกได้เลย</p>
-                    </div>
-                `;
-                return;
-            }
-
-            currentMessages.forEach(msg => {
-                const isUser = msg.sender === 'user';
-                const msgWrapper = document.createElement('div');
-                msgWrapper.className = `flex flex-col ${isUser ? 'items-end' : 'items-start'} space-y-1 mb-2`;
-
-                msgWrapper.innerHTML = `
-                    <div class="flex items-end gap-2 max-w-[85%] sm:max-w-[75%] ${isUser ? 'flex-row-reverse' : 'flex-row'}">
-                        <div class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] text-white flex-shrink-0 ${
-                            isUser ? 'bg-blue-600' : 'bg-gray-700'
-                        }">
-                            <i class="fa-solid ${isUser ? 'fa-user' : 'fa-headset'}"></i>
-                        </div>
-                        <div class="rounded-2xl px-4 py-2.5 text-sm ${
-                            isUser 
-                                ? 'bg-blue-600 text-white rounded-br-xs' 
-                                : 'bg-gray-800 text-gray-100 border border-gray-700/50 rounded-bl-xs'
-                        } whitespace-pre-wrap break-words shadow-sm">
-                            ${escapeHtml(msg.text)}
-                        </div>
-                    </div>
-                    <span class="text-[10px] text-gray-500 px-9">${msg.time}</span>
-                `;
-
-                messagesContainer.appendChild(msgWrapper);
-            });
-
-            // Auto scroll to bottom
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        // --- Category Management ---
-        function switchCategory(catId) {
-            appData.activeCategoryId = catId;
-            saveData();
-            renderCategories();
-            renderMessages();
-            closeMobileSidebar();
-        }
-
-        function addCategory() {
-            const name = prompt('กรุณาระบุชื่อหมวดหมู่แชทลับใหม่:');
-            if (name && name.trim()) {
-                const newId = 'cat_' + Date.now();
-                appData.categories.push({
-                    id: newId,
-                    name: name.trim(),
-                    icon: 'fa-folder'
-                });
-                appData.messages[newId] = [];
-                appData.activeCategoryId = newId;
-                saveData();
-                renderCategories();
-                renderMessages();
-            }
-        }
-
-        function deleteCategory(catId) {
-            if (appData.categories.length <= 1) return;
-            
-            if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบหมวดหมู่นี้? ข้อความทั้งหมดในหมวดนี้จะหายไป')) {
-                appData.categories = appData.categories.filter(c => c.id !== catId);
-                delete appData.messages[catId];
-                
-                if (appData.activeCategoryId === catId) {
-                    appData.activeCategoryId = appData.categories[0].id;
-                }
-                saveData();
-                renderCategories();
-                renderMessages();
-            }
-        }
-
-        // --- Chat Actions ---
-        function sendMessage(text) {
-            if (!text.trim()) return;
-
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-            if (!appData.messages[appData.activeCategoryId]) {
-                appData.messages[appData.activeCategoryId] = [];
-            }
-
-            appData.messages[appData.activeCategoryId].push({
-                id: 'msg_' + Date.now(),
-                sender: currentRole,
-                text: text.trim(),
-                time: timeStr
-            });
-
-            saveData();
-            renderMessages();
-        }
-
-        function clearCurrentChat() {
-            if (confirm('คุณต้องการล้างข้อมูลแชทในห้องนี้ใช่หรือไม่?')) {
-                appData.messages[appData.activeCategoryId] = [];
-                saveData();
-                renderMessages();
-            }
-        }
-
-        function clearAllData() {
-            if (confirm('⚠️ เตือน :  คุณต้องการล้างข้อมูลแชททั้งหมดทุกหมวดหมู่ใช่หรือไม่? ข้อมูลทั้งหมดจะถูกลบอย่างถาวร!')) {
-
-            appData = {
-                    categories: [
-                        { id: 'cat_general', name: 'ติดต่อผู้สร้างเซิร์ฟเวอร์', icon: 'fa-headset' }
-                    ],
-                    activeCategoryId: 'cat_general',
-                    messages: {
-                        'cat_general': []
-                    }
-                };
-                saveData();
-                renderCategories();
-                renderMessages();
-            }
-        }
-
-        // --- Role Switcher ---
-        function setRole(role) {
-            currentRole = role;
-            if (role === 'user') {
-                roleUserBtn.className = 'px-2.5 py-1 rounded-md text-[11px] font-medium transition bg-blue-600 text-white shadow';
-                roleOtherBtn.className = 'px-2.5 py-1 rounded-md text-[11px] font-medium transition text-gray-400 hover:text-gray-200';
-            } else {
-                roleOtherBtn.className = 'px-2.5 py-1 rounded-md text-[11px] font-medium transition bg-gray-700 text-white shadow';
-                roleUserBtn.className = 'px-2.5 py-1 rounded-md text-[11px] font-medium transition text-gray-400 hover:text-gray-200';
-            }
-        }
-
-        // --- Helper Utilities ---
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        function closeMobileSidebar() {
-            sidebar.classList.add('-translate-x-full');
-            sidebarOverlay.classList.add('hidden');
-        }
-
-        // --- Event Listeners ---
-        function setupEventListeners() {
-            // Secret Header Click Event (กด 1 ครั้งเพื่อสลับมาห้องแชทลับหลัก)
-            const openMainSecretChat = () => {
-                switchCategory('cat_general');
-            };
-
-            secretHeaderBtn.addEventListener('click', openMainSecretChat);
-            mobileSecretBtn.addEventListener('click', openMainSecretChat);
-
-            // Form Submit
-            chatForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                sendMessage(messageInput.value);
-                messageInput.value = '';
-                messageInput.style.height = 'auto';
-            });
-
-            // Auto resize textarea
-            messageInput.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
-            });
-
-            // Enter to send (Shift + Enter for new line)
-            messageInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    chatForm.dispatchEvent(new Event('submit'));
-                }
-            });
-
-            // Role Switch Buttons
-            roleUserBtn.addEventListener('click', () => setRole('user'));
-            roleOtherBtn.addEventListener('click', () => setRole('other'));
-
-            // Category & Chat Management
-            addCategoryBtn.addEventListener('click', addCategory);
-            clearCurrentChatBtn.addEventListener('click', clearCurrentChat);
-            clearAllBtn.addEventListener('click', clearAllData);
-
-            // Mobile Menu Toggle
-            toggleMenuBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('-translate-x-full');
-                sidebarOverlay.classList.toggle('hidden');
-            });
-
-            sidebarOverlay.addEventListener('click', closeMobileSidebar);
-        }
-
-        // --- Initialize App ---
-        window.addEventListener('DOMContentLoaded', init);
-    </script>
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+    }
+  </script>
 </body>
 </html>
+
