@@ -1,8 +1,8 @@
-
+<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Dark Chat</title>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -35,76 +35,60 @@
       background-color: var(--bg-dark);
       color: var(--text-main);
       overflow: hidden;
-      position: fixed;
+      margin: 0;
+      padding: 0;
     }
 
     .app-container {
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       height: 100dvh;
       display: flex;
       background-color: var(--chat-bg);
-      position: relative;
       overflow: hidden;
-    }
-
-    /* --- SIDEBAR OVERLAY FOR MOBILE --- */
-    .sidebar-overlay {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      z-index: 40;
-      backdrop-filter: blur(2px);
-    }
-
-    .sidebar-overlay.active {
-      display: block;
+      position: relative;
     }
 
     /* --- SIDEBAR --- */
     .sidebar {
-      width: 300px;
+      width: 260px;
       background-color: var(--sidebar-bg);
       border-right: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
       height: 100%;
-      z-index: 50;
-      transition: transform 0.3s ease;
+      overflow: hidden;
     }
 
     .sidebar-header {
-      padding: 16px;
+      padding: 12px 14px;
       border-bottom: 1px solid var(--border-color);
+      flex-shrink: 0;
     }
 
     .top-status {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .status-badge {
       background-color: #064e3b;
       color: #34d399;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 0.6rem;
       font-weight: 600;
     }
 
     .main-title-box {
       cursor: pointer;
-      padding: 8px;
-      border-radius: 8px;
+      padding: 6px;
+      border-radius: 6px;
       transition: background 0.2s;
     }
 
@@ -113,23 +97,23 @@
     }
 
     .main-title {
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       color: var(--text-main);
     }
 
     .main-subtitle {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
       margin-top: 2px;
     }
 
     /* Category List */
     .category-section {
-      padding: 12px 16px;
+      padding: 10px 14px;
       flex: 1;
       overflow-y: auto;
     }
@@ -138,9 +122,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       font-weight: 600;
     }
 
@@ -152,7 +136,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 4px;
+      padding: 2px;
       border-radius: 4px;
     }
 
@@ -170,11 +154,11 @@
     .category-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 8px;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       transition: all 0.2s;
     }
@@ -193,24 +177,25 @@
 
     /* Sidebar Footer */
     .sidebar-footer {
-      padding: 12px 16px;
+      padding: 10px 14px;
       border-top: 1px solid var(--border-color);
       background-color: var(--sidebar-bg);
+      flex-shrink: 0;
     }
 
     .clear-all-btn {
       width: 100%;
-      padding: 10px;
+      padding: 8px;
       background-color: transparent;
       border: 1px solid var(--danger-color);
       color: #f87171;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      font-size: 0.8rem;
+      gap: 6px;
+      font-size: 0.75rem;
       transition: all 0.2s;
     }
 
@@ -226,12 +211,12 @@
       flex-direction: column;
       height: 100%;
       background-color: var(--chat-bg);
-      position: relative;
       overflow: hidden;
+      position: relative;
     }
 
     .chat-header {
-      height: 60px;
+      height: 52px;
       padding: 0 16px;
       border-bottom: 1px solid var(--border-color);
       display: flex;
@@ -241,26 +226,15 @@
       flex-shrink: 0;
     }
 
-    .mobile-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--text-main);
-      cursor: pointer;
-      padding: 6px;
-      margin-right: 8px;
-    }
-
     .chat-title-group {
       display: flex;
       align-items: center;
-      gap: 10px;
-      overflow: hidden;
+      gap: 8px;
     }
 
     .avatar-icon {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background-color: var(--accent-blue);
       display: flex;
@@ -272,52 +246,46 @@
 
     .chat-title-text {
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       display: flex;
       align-items: center;
       gap: 6px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .chat-subtitle {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .clear-this-btn {
       background-color: #331e08;
       border: 1px solid #78350f;
       color: #fbbf24;
-      padding: 6px 10px;
+      padding: 5px 10px;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       flex-shrink: 0;
     }
 
-    /* Messages Display Area */
+    /* Messages Area */
     .messages-container {
       flex: 1;
       padding: 16px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      -webkit-overflow-scrolling: touch;
+      gap: 10px;
+      min-height: 0; /* สำคัญมาก ป้องกันไม่ให้แชทดันคอนเทนเนอร์หลุดขอบ */
     }
 
     .message-wrapper {
       display: flex;
       flex-direction: column;
-      max-width: 80%;
+      max-width: 75%;
     }
 
     .message-wrapper.my {
@@ -331,9 +299,9 @@
     }
 
     .message-bubble {
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 0.9rem;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
       line-height: 1.4;
       word-break: break-word;
     }
@@ -351,28 +319,27 @@
     }
 
     .message-time {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       color: var(--text-muted);
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
-    /* Input Footer Area (ส่วนพิมพ์ยึดติดล่างสุดตลอดเวลา) */
+    /* Input Area - ล็อกล่างสุดเสมอ */
     .chat-input-area {
-      padding: 12px 16px;
-      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      padding: 10px 14px;
       border-top: 1px solid var(--border-color);
       background-color: var(--sidebar-bg);
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 6px;
       flex-shrink: 0;
     }
 
     .role-selector {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.75rem;
+      gap: 6px;
+      font-size: 0.7rem;
     }
 
     .role-label {
@@ -383,10 +350,10 @@
       background-color: var(--card-active);
       border: 1px solid var(--border-color);
       color: var(--text-muted);
-      padding: 6px 12px;
-      border-radius: 6px;
+      padding: 3px 8px;
+      border-radius: 5px;
       cursor: pointer;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -408,11 +375,11 @@
       flex: 1;
       background-color: var(--bg-dark);
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 12px 14px;
+      border-radius: 6px;
+      padding: 8px 12px;
       color: var(--text-main);
       outline: none;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
     }
 
     .chat-input:focus {
@@ -423,57 +390,23 @@
       background-color: var(--accent-blue);
       color: white;
       border: none;
-      padding: 0 18px;
-      border-radius: 8px;
+      padding: 0 14px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.9rem;
+      gap: 4px;
+      font-size: 0.8rem;
       flex-shrink: 0;
-    }
-
-    /* Responsive Layout สำหรับ มือถือ / แท็บเล็ต (ใช้ Drawer แทนการแบ่งบนล่าง) */
-    @media (max-width: 820px) {
-      .mobile-menu-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .sidebar {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 280px;
-        height: 100%;
-        transform: translateX(-100%);
-        box-shadow: 4px 0 15px rgba(0,0,0,0.5);
-      }
-
-      .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .chat-title-text {
-        font-size: 0.85rem;
-      }
-      
-      .chat-subtitle {
-        font-size: 0.65rem;
-      }
     }
   </style>
 </head>
 <body>
 
   <div class="app-container">
-    <!-- Overlay สำหรับกดปิด Sidebar บนมือถือ -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
-
     <!-- SIDEBAR -->
-    <div class="sidebar" id="sidebar">
+    <div class="sidebar">
       <div class="sidebar-header">
         <div class="top-status">
           <span id="currentDateText">วันนี้: พฤหัส 30 ก.ค. 2569</span>
@@ -481,9 +414,9 @@
         </div>
         <div class="main-title-box" onclick="selectCategory('cat_default')">
           <div class="main-title">
-            <i data-lucide="headphone-off" style="width: 16px; height: 16px; color: #60a5fa;"></i>
+            <i data-lucide="headphone-off" style="width: 14px; height: 14px; color: #60a5fa;"></i>
             <span>ติดต่อผู้สร้างเซิร์ฟเวอร์</span>
-            <i data-lucide="chevron-right" style="width: 14px; height: 14px; color: var(--text-muted); margin-left: auto;"></i>
+            <i data-lucide="chevron-right" style="width: 12px; height: 12px; color: var(--text-muted); margin-left: auto;"></i>
           </div>
           <div class="main-subtitle">ช่องทางติดต่อสอบถามและแจ้งปัญหา</div>
         </div>
@@ -494,7 +427,7 @@
         <div class="category-header">
           <span>หมวดหมู่แชทลับ</span>
           <button class="add-cat-btn" onclick="addNewCategory()" title="เพิ่มหมวดหมู่ใหม่">
-            <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
+            <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
           </button>
         </div>
         <div class="category-list" id="categoryList">
@@ -515,16 +448,13 @@
     <div class="chat-area">
       <!-- Chat Header -->
       <div class="chat-header">
-        <button class="mobile-menu-btn" onclick="toggleSidebar(true)">
-          <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
-        </button>
         <div class="chat-title-group">
           <div class="avatar-icon">
-            <i data-lucide="user-check" style="width: 18px; height: 18px;"></i>
+            <i data-lucide="user-check" style="width: 16px; height: 16px;"></i>
           </div>
           <div>
             <div class="chat-title-text">
-              <i data-lucide="headphone-off" style="width: 16px; height: 16px; color: #60a5fa;"></i>
+              <i data-lucide="headphone-off" style="width: 14px; height: 14px; color: #60a5fa;"></i>
               <span id="activeCategoryTitle">ติดต่อผู้สร้างเซิร์ฟเวอร์</span>
             </div>
             <div class="chat-subtitle" id="activeCategorySubtitle">หมวดหมู่: ติดต่อผู้สร้างเซิร์ฟเวอร์ (บันทึกข้อมูลแล้ว)</div>
@@ -547,15 +477,15 @@
           <div class="role-selector">
             <span class="role-label">บทบาท:</span>
             <button class="role-btn active" id="roleMyBtn" onclick="setRole('my')">
-              <i data-lucide="user" style="width: 12px; height: 12px;"></i>
+              <i data-lucide="user" style="width: 10px; height: 10px;"></i>
               <span>ฝั่งเรา</span>
             </button>
             <button class="role-btn" id="roleOtherBtn" onclick="setRole('other')">
-              <i data-lucide="corner-up-left" style="width: 12px; height: 12px;"></i>
+              <i data-lucide="corner-up-left" style="width: 10px; height: 10px;"></i>
               <span>ตอบกลับเรา</span>
             </button>
           </div>
-          <div style="font-size: 0.65rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px;">
+          <div style="font-size: 0.6rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px;">
             <i data-lucide="lock" style="width: 10px; height: 10px;"></i>
             <span>บันทึกอัตโนมัติ</span>
           </div>
@@ -565,7 +495,7 @@
           <input type="text" id="messageInput" class="chat-input" placeholder="พิมพ์ข้อความที่ต้องการบันทึก..." onkeypress="handleKeyPress(event)">
           <button class="send-btn" onclick="sendMessage()">
             <span>ส่ง</span>
-            <i data-lucide="send" style="width: 14px; height: 14px;"></i>
+            <i data-lucide="send" style="width: 12px; height: 12px;"></i>
           </button>
         </div>
       </div>
@@ -598,18 +528,6 @@
       lucide.createIcons();
     };
 
-    function toggleSidebar(open) {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebarOverlay');
-      if (open) {
-        sidebar.classList.add('open');
-        overlay.classList.add('active');
-      } else {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('active');
-      }
-    }
-
     function updateDateDisplay() {
       const now = new Date();
       const days = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัส', 'ศุกร์', 'เสาร์'];
@@ -634,7 +552,7 @@
 
         const iconName = cat.icon || 'folder';
         item.innerHTML = `
-          <i data-lucide="${iconName}" style="width: 14px; height: 14px;"></i>
+          <i data-lucide="${iconName}" style="width: 12px; height: 12px;"></i>
           <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(cat.name)}</span>
         `;
         categoryList.appendChild(item);
@@ -653,7 +571,6 @@
 
       renderCategories();
       renderMessages();
-      toggleSidebar(false); // ปิด sidebar เมนูบนมือถืออัตโนมัติ
     }
 
     function addNewCategory() {
@@ -739,7 +656,6 @@
 
     function clearCurrentCategoryChat() {
       if (confirm('คุณต้องการล้างข้อมูลแชทในหมวดหมู่นี้ใช่หรือไม่?')) {
-
         chats[activeCategoryId] = [];
         saveChats();
         renderMessages();
@@ -785,3 +701,4 @@
   </script>
 </body>
 </html>
+
