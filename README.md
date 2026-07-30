@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Dark Chat</title>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -31,17 +31,38 @@
     html, body {
       width: 100%;
       height: 100%;
+      height: 100dvh;
       background-color: var(--bg-dark);
       color: var(--text-main);
       overflow: hidden;
+      position: fixed;
     }
 
     .app-container {
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
       display: flex;
       background-color: var(--chat-bg);
       position: relative;
+      overflow: hidden;
+    }
+
+    /* --- SIDEBAR OVERLAY FOR MOBILE --- */
+    .sidebar-overlay {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 40;
+      backdrop-filter: blur(2px);
+    }
+
+    .sidebar-overlay.active {
+      display: block;
     }
 
     /* --- SIDEBAR --- */
@@ -53,6 +74,8 @@
       flex-direction: column;
       flex-shrink: 0;
       height: 100%;
+      z-index: 50;
+      transition: transform 0.3s ease;
     }
 
     .sidebar-header {
@@ -177,7 +200,7 @@
 
     .clear-all-btn {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       background-color: transparent;
       border: 1px solid var(--danger-color);
       color: #f87171;
@@ -204,6 +227,7 @@
       height: 100%;
       background-color: var(--chat-bg);
       position: relative;
+      overflow: hidden;
     }
 
     .chat-header {
@@ -217,10 +241,21 @@
       flex-shrink: 0;
     }
 
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      padding: 6px;
+      margin-right: 8px;
+    }
+
     .chat-title-group {
       display: flex;
       align-items: center;
       gap: 10px;
+      overflow: hidden;
     }
 
     .avatar-icon {
@@ -232,6 +267,7 @@
       align-items: center;
       justify-content: center;
       color: white;
+      flex-shrink: 0;
     }
 
     .chat-title-text {
@@ -240,11 +276,17 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .chat-subtitle {
       font-size: 0.7rem;
       color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .clear-this-btn {
@@ -258,6 +300,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      flex-shrink: 0;
     }
 
     /* Messages Display Area */
@@ -268,13 +311,13 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      padding-bottom: 20px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .message-wrapper {
       display: flex;
       flex-direction: column;
-      max-width: 75%;
+      max-width: 80%;
     }
 
     .message-wrapper.my {
@@ -313,14 +356,15 @@
       margin-top: 3px;
     }
 
-    /* Input Footer Area (การันตีว่าเห็นแน่นอนอยู่ล่างสุด) */
+    /* Input Footer Area (ส่วนพิมพ์ยึดติดล่างสุดตลอดเวลา) */
     .chat-input-area {
       padding: 12px 16px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
       border-top: 1px solid var(--border-color);
       background-color: var(--sidebar-bg);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       flex-shrink: 0;
     }
 
@@ -339,7 +383,7 @@
       background-color: var(--card-active);
       border: 1px solid var(--border-color);
       color: var(--text-muted);
-      padding: 4px 10px;
+      padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 0.75rem;
@@ -365,10 +409,10 @@
       background-color: var(--bg-dark);
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 10px 14px;
+      padding: 12px 14px;
       color: var(--text-main);
       outline: none;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
 
     .chat-input:focus {
@@ -379,28 +423,45 @@
       background-color: var(--accent-blue);
       color: white;
       border: none;
-      padding: 0 16px;
+      padding: 0 18px;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
+      flex-shrink: 0;
     }
 
-    /* Responsive Mobile / Tablet Layout */
-    @media (max-width: 768px) {
-      .app-container {
-        flex-direction: column;
+    /* Responsive Layout สำหรับ มือถือ / แท็บเล็ต (ใช้ Drawer แทนการแบ่งบนล่าง) */
+    @media (max-width: 820px) {
+      .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
+
       .sidebar {
-        width: 100%;
-        height: 35vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100%;
+        transform: translateX(-100%);
+        box-shadow: 4px 0 15px rgba(0,0,0,0.5);
       }
-      .chat-area {
-        width: 100%;
-        height: 65vh;
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .chat-title-text {
+        font-size: 0.85rem;
+      }
+      
+      .chat-subtitle {
+        font-size: 0.65rem;
       }
     }
   </style>
@@ -408,8 +469,11 @@
 <body>
 
   <div class="app-container">
+    <!-- Overlay สำหรับกดปิด Sidebar บนมือถือ -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
+
     <!-- SIDEBAR -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="top-status">
           <span id="currentDateText">วันนี้: พฤหัส 30 ก.ค. 2569</span>
@@ -451,6 +515,9 @@
     <div class="chat-area">
       <!-- Chat Header -->
       <div class="chat-header">
+        <button class="mobile-menu-btn" onclick="toggleSidebar(true)">
+          <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+        </button>
         <div class="chat-title-group">
           <div class="avatar-icon">
             <i data-lucide="user-check" style="width: 18px; height: 18px;"></i>
@@ -474,11 +541,11 @@
         <!-- แสดงข้อความแชท -->
       </div>
 
-      <!-- Chat Input Area (ส่วนพิมพ์ด้านล่างสุด) -->
+      <!-- Chat Input Area (ส่วนพิมพ์ล่างสุด) -->
       <div class="chat-input-area">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div class="role-selector">
-            <span class="role-label">บทบาทการพิมพ์:</span>
+            <span class="role-label">บทบาท:</span>
             <button class="role-btn active" id="roleMyBtn" onclick="setRole('my')">
               <i data-lucide="user" style="width: 12px; height: 12px;"></i>
               <span>ฝั่งเรา</span>
@@ -490,7 +557,7 @@
           </div>
           <div style="font-size: 0.65rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px;">
             <i data-lucide="lock" style="width: 10px; height: 10px;"></i>
-            <span>บันทึกลงเครื่องอัตโนมัติ</span>
+            <span>บันทึกอัตโนมัติ</span>
           </div>
         </div>
 
@@ -498,7 +565,7 @@
           <input type="text" id="messageInput" class="chat-input" placeholder="พิมพ์ข้อความที่ต้องการบันทึก..." onkeypress="handleKeyPress(event)">
           <button class="send-btn" onclick="sendMessage()">
             <span>ส่ง</span>
-            <i data-lucide="send" style="width: 12px; height: 12px;"></i>
+            <i data-lucide="send" style="width: 14px; height: 14px;"></i>
           </button>
         </div>
       </div>
@@ -530,6 +597,18 @@
       renderMessages();
       lucide.createIcons();
     };
+
+    function toggleSidebar(open) {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (open) {
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+      } else {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      }
+    }
 
     function updateDateDisplay() {
       const now = new Date();
@@ -574,6 +653,7 @@
 
       renderCategories();
       renderMessages();
+      toggleSidebar(false); // ปิด sidebar เมนูบนมือถืออัตโนมัติ
     }
 
     function addNewCategory() {
@@ -659,6 +739,7 @@
 
     function clearCurrentCategoryChat() {
       if (confirm('คุณต้องการล้างข้อมูลแชทในหมวดหมู่นี้ใช่หรือไม่?')) {
+
         chats[activeCategoryId] = [];
         saveChats();
         renderMessages();
@@ -704,4 +785,3 @@
   </script>
 </body>
 </html>
-
