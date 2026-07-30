@@ -205,12 +205,7 @@ background: #555;
 background: #777;
 }
 
-/* ออนิเมชันปุ่มรับ Robux ดึงดูดสายตา */
-@keyframes pulse-robux {
-0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(233, 30, 99, 0.7); }
-70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(233, 30, 99, 0); }
-100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(233, 30, 99, 0); }
-}
+
 </style>
 
 </head>
@@ -218,7 +213,7 @@ background: #777;
 
 <div class="container">
 
-<h1>💬 Dark Chat ระบบ AI 3.0 </h1>
+<h1>💬 Dark Chat ระบบ AI 3.0 เขียนโค้ด </h1>
 
 <!-- เพิ่มเติม: หน้าต่างยืนยันตัวตนจะแสดงเป็นอันดับแรก -->
 <div id="authBox">
