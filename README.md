@@ -314,22 +314,6 @@ background: #777;
     </div>
 </div>
 
-<!-- ================= Custom Modal สำหรับแสดงการโอน Robux สำเร็จ ================= -->
-<div id="robuxSuccessModal" class="modal-overlay">
-    <div class="modal-content" style="border-color: #e91e63;">
-        <h3 style="color: #ff4081;">🎉 ดำเนินการรับ Robux สำเร็จ!</h3>
-        <p style="margin-top: 12px; color: #eee; font-size: 15px;">ระบบทำการอนุมัติสิทธิ์การโอนย้ายสำเร็จ</p>
-        <div style="background: #20252d; padding: 10px; border-radius: 8px; margin: 12px 0; border: 1px solid #444;">
-            <span style="color: #888; font-size: 13px;">เป้าหมายบัญชีผู้ใช้</span><br>
-            <strong style="color: #00e5ff; font-size: 16px; letter-spacing: 0.5px;">Roblox ID: 9437139923</strong>
-        </div>
-        <p style="color: #4caf50; font-size: 14px; font-weight: bold;">⭐ จำนวนที่ได้รับ: 10 Robux</p>
-        <div class="modal-buttons" style="justify-content: center;">
-            <button class="modal-btn-cancel" style="background: #e91e63; width: auto; padding: 10px 25px;" onclick="closeRobuxSuccessModal()">ตกลง</button>
-        </div>
-    </div>
-</div>
-
 <script>
 
 const chat = document.getElementById("chat");
