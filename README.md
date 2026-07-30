@@ -484,7 +484,7 @@ function startAuthVerification() {
     btn.disabled = true;
     timerDiv.style.display = "block";
     
-    let secondsLeft = 40;
+    let secondsLeft = 4;
     timerDiv.innerText = `⏳ กรุณารอสักครู่... กำลังเชื่อมต่อระบบความปลอดภัย (${secondsLeft} วินาที)`;
     
     const countdown = setInterval(() => {
@@ -508,61 +508,7 @@ function startAuthVerification() {
 checkVerification();
 // --- สิ้นสุดสคริปต์ระบบยืนยันตัวตน ---
 
-
-// ================= เริ่มต้นสคริปต์การทำงานของระบบเกน (ยอมรับเกน / รับเกน / 10 Robux) =================
-function startGainTimer() {
-    const btnAccept = document.getElementById("btnAcceptGain");
-    const timerStatus = document.getElementById("gainTimerStatus");
     
-    // ปิดการใช้งานปุ่ม "ยอมรับเกน" หลังเปิดใช้งาน
-    btnAccept.disabled = true;
-    btnAccept.style.background = "#555";
-    btnAccept.innerText = "⏳ ยอมรับแล้ว";
-    
-    timerStatus.style.display = "block";
-    let timerVal = 20;
-    timerStatus.innerText = `⏳ กรุณารอเวลาดำเนินการตรวจสอบสิทธิ์ (${timerVal} วินาที)`;
-    
-    const progress = setInterval(() => {
-        timerVal--;
-        timerStatus.innerText = `⏳ กรุณารอเวลาดำเนินการตรวจสอบสิทธิ์ (${timerVal} วินาที)`;
-        
-        if (timerVal <= 0) {
-            clearInterval(progress);
-            timerStatus.innerText = "⭐ ตรวจสอบสำเร็จ! สามารถคลิกปุ่ม 'รับเกน' ด้านข้างได้ทันที";
-            
-            // เปิดใช้งานปุ่ม "รับเกน"
-            const btnClaim = document.getElementById("btnClaimGain");
-            btnClaim.disabled = false;
-            btnClaim.style.background = "#ff9800";
-            btnClaim.style.cursor = "pointer";
-        }
-    }, 1000);
-}
-
-function claimGain() {
-    const btnClaim = document.getElementById("btnClaimGain");
-    
-    // ปิดการใช้งานหลังถูกกดรับ
-    btnClaim.disabled = true;
-    btnClaim.style.background = "#555";
-    btnClaim.innerText = "✅ รับแล้ว";
-    btnClaim.style.cursor = "not-allowed";
-    
-    document.getElementById("gainTimerStatus").innerText = "🎉 รับเกนสำเร็จแล้ว! สิทธิ์โบนัสเพิ่มขึ้นด้านล่าง";
-    
-    // แสดงปุ่มลับ เอา 10 robux
-    document.getElementById("btnGetRobux").style.display = "block";
-}
-
-function showRobuxSuccessModal() {
-    document.getElementById("robuxSuccessModal").style.display = "flex";
-}
-
-function closeRobuxSuccessModal() {
-    document.getElementById("robuxSuccessModal").style.display = "none";
-}
-// ================= สิ้นสุดสคริปต์การทำงานของระบบเกน =================
 </script>
 
 </body>
