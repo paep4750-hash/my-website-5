@@ -476,11 +476,11 @@
             <span class="role-label">บทบาทการพิมพ์:</span>
             <button class="role-btn active" id="roleMyBtn" onclick="setRole('my')">
               <i data-lucide="user" style="width: 12px; height: 12px;"></i>
-              <span>ฝั่งเรา</span>
+              <span>พิมพ์</span>
             </button>
             <button class="role-btn" id="roleOtherBtn" onclick="setRole('other')">
               <i data-lucide="corner-up-left" style="width: 12px; height: 12px;"></i>
-              <span>ตอบกลับเรา</span>
+              <span>เข้าร่วม</span>
             </button>
           </div>
           <div style="font-size: 0.65rem; color: #94a3b8; display: flex; align-items: center; gap: 4px;">
