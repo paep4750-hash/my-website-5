@@ -512,7 +512,6 @@
     let chats = JSON.parse(localStorage.getItem('dark_chat_messages')) || {
       'cat_default': [
         { sender: 'other', text: 'สวัสดีครับ มีอะไรให้ผู้ดูแลเซิร์ฟเวอร์ช่วยเหลือไหมครับ?', time: '10:00 AM' },
-        { sender: 'my', text: 'สอบถามเรื่องการจัดเก็บข้อมูลครับ', time: '10:01 AM' }
       ]
     };
 
