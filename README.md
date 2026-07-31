@@ -413,7 +413,7 @@
         <div class="main-title-box" onclick="selectCategory('cat_default')">
           <div class="main-title">
             <i data-lucide="headphone-off" style="width: 16px; height: 16px; color: #60a5fa;"></i>
-            <span>AI เขียนcode beta </span>
+            <span>ติดต่อผู้สร้างserver</span>
             <i data-lucide="chevron-right" style="width: 14px; height: 14px; color: #94a3b8; margin-left: auto;"></i>
           </div>
           <div class="main-subtitle">ช่องทางติดต่อสอบถามและแจ้งปัญหา</div>
@@ -453,7 +453,7 @@
           <div>
             <div class="chat-title-text">
               <i data-lucide="headphone-off" style="width: 16px; height: 16px; color: #60a5fa;"></i>
-              <span id="activeCategoryTitle">ติดต่อผู้สร้างเซิร์ฟเวอร์</span>
+              <span id="activeCategoryTitle">AI เขียน code beta</span>
             </div>
             <div class="chat-subtitle" id="activeCategorySubtitle">หมวดหมู่: ติดต่อผู้สร้างเซิร์ฟเวอร์ (บันทึกข้อมูลแล้ว)</div>
           </div>
