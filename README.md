@@ -413,7 +413,7 @@
         <div class="main-title-box" onclick="selectCategory('cat_default')">
           <div class="main-title">
             <i data-lucide="headphone-off" style="width: 16px; height: 16px; color: #60a5fa;"></i>
-            <span>ติดต่อผู้สร้างserver</span>
+            <span>ติดต่อผู้สร้างเซิร์ฟเวอร์</span>
             <i data-lucide="chevron-right" style="width: 14px; height: 14px; color: #94a3b8; margin-left: auto;"></i>
           </div>
           <div class="main-subtitle">ช่องทางติดต่อสอบถามและแจ้งปัญหา</div>
@@ -453,9 +453,9 @@
           <div>
             <div class="chat-title-text">
               <i data-lucide="headphone-off" style="width: 16px; height: 16px; color: #60a5fa;"></i>
-              <span id="activeCategoryTitle">AI เขียน code beta</span>
+              <span id="activeCategoryTitle">ติดต่อผู้สร้างเซิร์ฟเวอร์</span>
             </div>
-            <div class="chat-subtitle" id="activeCategorySubtitle">หมวดหมู่: AI เขียน code beta (บันทึกข้อมูลแล้ว)</div>
+            <div class="chat-subtitle" id="activeCategorySubtitle">หมวดหมู่: ติดต่อผู้สร้างเซิร์ฟเวอร์ (บันทึกข้อมูลแล้ว)</div>
           </div>
         </div>
         <button class="clear-this-btn" onclick="clearCurrentCategoryChat()">
@@ -476,11 +476,11 @@
             <span class="role-label">บทบาทการพิมพ์:</span>
             <button class="role-btn active" id="roleMyBtn" onclick="setRole('my')">
               <i data-lucide="user" style="width: 12px; height: 12px;"></i>
-              <span>พิมพ์</span>
+              <span>ฝั่งเรา</span>
             </button>
             <button class="role-btn" id="roleOtherBtn" onclick="setRole('other')">
               <i data-lucide="corner-up-left" style="width: 12px; height: 12px;"></i>
-              <span>เข้าร่วม</span>
+              <span>ตอบกลับเรา</span>
             </button>
           </div>
           <div style="font-size: 0.65rem; color: #94a3b8; display: flex; align-items: center; gap: 4px;">
@@ -512,6 +512,7 @@
     let chats = JSON.parse(localStorage.getItem('dark_chat_messages')) || {
       'cat_default': [
         { sender: 'other', text: 'สวัสดีครับ มีอะไรให้ผู้ดูแลเซิร์ฟเวอร์ช่วยเหลือไหมครับ?', time: '10:00 AM' },
+        { sender: 'my', text: 'สอบถามเรื่องการจัดเก็บข้อมูลครับ', time: '10:01 AM' }
       ]
     };
 
