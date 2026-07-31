@@ -1,42 +1,30 @@
-<!DOCTYPE html>
+---
+layout: null
+---
+
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Dark Chat</title>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    :root {
-      --bg-dark: #0b0f19;
-      --sidebar-bg: #111827;
-      --chat-bg: #0f172a;
-      --card-active: #1e293b;
-      --accent-blue: #2563eb;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border-color: #1e293b;
-      --msg-other: #1e293b;
-      --msg-my: #2563eb;
-      --danger-color: #7f1d1d;
+    /* Reset & Force Fullscreen (ป้องกันการโดนบีบจากคอนเทนเนอร์นอก) */
+    html, body {
+      width: 100% !important;
+      height: 100% !important;
+      height: 100dvh !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      background-color: #0b0f19 !important;
+      color: #f8fafc !important;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     }
 
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    html, body {
-      width: 100%;
-      height: 100%;
-      height: 100dvh;
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      overflow: hidden;
-      margin: 0;
-      padding: 0;
+      box-sizing: border-box !important;
     }
 
     .app-container {
@@ -44,26 +32,29 @@
       height: 100vh;
       height: 100dvh;
       display: flex;
-      background-color: var(--chat-bg);
+      background-color: #0f172a;
       overflow: hidden;
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
     }
 
     /* --- SIDEBAR --- */
     .sidebar {
-      width: 260px;
-      background-color: var(--sidebar-bg);
-      border-right: 1px solid var(--border-color);
+      width: 280px;
+      background-color: #111827;
+      border-right: 1px solid #1e293b;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
       height: 100%;
-      overflow: hidden;
     }
 
     .sidebar-header {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border-color);
+      padding: 14px;
+      border-bottom: 1px solid #1e293b;
       flex-shrink: 0;
     }
 
@@ -71,49 +62,49 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.7rem;
-      color: var(--text-muted);
+      font-size: 0.72rem;
+      color: #94a3b8;
       margin-bottom: 8px;
     }
 
     .status-badge {
       background-color: #064e3b;
       color: #34d399;
-      padding: 2px 6px;
-      border-radius: 10px;
-      font-size: 0.6rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.65rem;
       font-weight: 600;
     }
 
     .main-title-box {
       cursor: pointer;
-      padding: 6px;
-      border-radius: 6px;
+      padding: 8px;
+      border-radius: 8px;
       transition: background 0.2s;
     }
 
     .main-title-box:hover {
-      background-color: var(--card-active);
+      background-color: #1e293b;
     }
 
     .main-title {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 700;
       display: flex;
       align-items: center;
-      gap: 6px;
-      color: var(--text-main);
+      gap: 8px;
+      color: #f8fafc;
     }
 
     .main-subtitle {
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      margin-top: 2px;
+      font-size: 0.68rem;
+      color: #94a3b8;
+      margin-top: 3px;
     }
 
     /* Category List */
     .category-section {
-      padding: 10px 14px;
+      padding: 12px 14px;
       flex: 1;
       overflow-y: auto;
     }
@@ -122,27 +113,27 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 6px;
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-bottom: 8px;
       font-weight: 600;
     }
 
     .add-cat-btn {
       background: none;
       border: none;
-      color: var(--text-muted);
+      color: #94a3b8;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 2px;
+      padding: 4px;
       border-radius: 4px;
     }
 
     .add-cat-btn:hover {
-      background-color: var(--card-active);
-      color: var(--text-main);
+      background-color: #1e293b;
+      color: #f8fafc;
     }
 
     .category-list {
@@ -154,32 +145,31 @@
     .category-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 6px;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      font-size: 0.82rem;
+      color: #94a3b8;
       transition: all 0.2s;
     }
 
     .category-item:hover {
       background-color: rgba(255, 255, 255, 0.05);
-      color: var(--text-main);
+      color: #f8fafc;
     }
 
     .category-item.active {
-      background-color: var(--card-active);
-      color: var(--text-main);
+      background-color: #1e293b;
+      color: #f8fafc;
       border: 1px solid rgba(255, 255, 255, 0.1);
       font-weight: 600;
     }
 
-    /* Sidebar Footer */
     .sidebar-footer {
-      padding: 10px 14px;
-      border-top: 1px solid var(--border-color);
-      background-color: var(--sidebar-bg);
+      padding: 12px 14px;
+      border-top: 1px solid #1e293b;
+      background-color: #111827;
       flex-shrink: 0;
     }
 
@@ -187,7 +177,7 @@
       width: 100%;
       padding: 8px;
       background-color: transparent;
-      border: 1px solid var(--danger-color);
+      border: 1px solid #7f1d1d;
       color: #f87171;
       border-radius: 6px;
       cursor: pointer;
@@ -195,12 +185,12 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       transition: all 0.2s;
     }
 
     .clear-all-btn:hover {
-      background-color: var(--danger-color);
+      background-color: #7f1d1d;
       color: #ffffff;
     }
 
@@ -210,33 +200,33 @@
       display: flex;
       flex-direction: column;
       height: 100%;
-      background-color: var(--chat-bg);
+      min-width: 0;
+      background-color: #0f172a;
       overflow: hidden;
-      position: relative;
     }
 
     .chat-header {
-      height: 52px;
+      height: 56px;
       padding: 0 16px;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid #1e293b;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: var(--sidebar-bg);
+      background-color: #111827;
       flex-shrink: 0;
     }
 
     .chat-title-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .avatar-icon {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background-color: var(--accent-blue);
+      background-color: #2563eb;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -246,40 +236,40 @@
 
     .chat-title-text {
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
     .chat-subtitle {
-      font-size: 0.65rem;
-      color: var(--text-muted);
+      font-size: 0.68rem;
+      color: #94a3b8;
     }
 
     .clear-this-btn {
       background-color: #331e08;
       border: 1px solid #78350f;
       color: #fbbf24;
-      padding: 5px 10px;
+      padding: 6px 12px;
       border-radius: 6px;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       flex-shrink: 0;
     }
 
-    /* Messages Area */
+    /* Messages Display (จะสกรอลล์เฉพาะส่วนนี้) */
     .messages-container {
       flex: 1;
       padding: 16px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      min-height: 0; /* สำคัญมาก ป้องกันไม่ให้แชทดันคอนเทนเนอร์หลุดขอบ */
+      gap: 12px;
+      min-height: 0; /* สำคัญมากป้องกัน flex-item ยืดล้น */
     }
 
     .message-wrapper {
@@ -299,61 +289,61 @@
     }
 
     .message-bubble {
-      padding: 8px 12px;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      line-height: 1.4;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      line-height: 1.45;
       word-break: break-word;
     }
 
     .message-wrapper.my .message-bubble {
-      background-color: var(--msg-my);
+      background-color: #2563eb;
       color: #ffffff;
       border-bottom-right-radius: 2px;
     }
 
     .message-wrapper.other .message-bubble {
-      background-color: var(--msg-other);
-      color: var(--text-main);
+      background-color: #1e293b;
+      color: #f8fafc;
       border-bottom-left-radius: 2px;
     }
 
     .message-time {
-      font-size: 0.6rem;
-      color: var(--text-muted);
-      margin-top: 2px;
+      font-size: 0.62rem;
+      color: #94a3b8;
+      margin-top: 3px;
     }
 
-    /* Input Area - ล็อกล่างสุดเสมอ */
+    /* Input Footer Area - การันตีว่าจะไม่โดนดันตกขอบ 100% */
     .chat-input-area {
-      padding: 10px 14px;
-      border-top: 1px solid var(--border-color);
-      background-color: var(--sidebar-bg);
+      padding: 12px 16px;
+      border-top: 1px solid #1e293b;
+      background-color: #111827;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      flex-shrink: 0;
+      gap: 8px;
+      flex-shrink: 0; /* ห้ามหดตัวเด็ดขาด */
     }
 
     .role-selector {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.7rem;
+      gap: 8px;
+      font-size: 0.75rem;
     }
 
     .role-label {
-      color: var(--text-muted);
+      color: #94a3b8;
     }
 
     .role-btn {
-      background-color: var(--card-active);
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 3px 8px;
-      border-radius: 5px;
+      background-color: #1e293b;
+      border: 1px solid #1e293b;
+      color: #94a3b8;
+      padding: 4px 10px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -361,7 +351,7 @@
 
     .role-btn.active {
       background-color: rgba(37, 99, 235, 0.2);
-      border-color: var(--accent-blue);
+      border-color: #2563eb;
       color: #60a5fa;
       font-weight: 600;
     }
@@ -373,32 +363,42 @@
 
     .chat-input {
       flex: 1;
-      background-color: var(--bg-dark);
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 8px 12px;
-      color: var(--text-main);
+      background-color: #0b0f19;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #f8fafc;
       outline: none;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
 
     .chat-input:focus {
-      border-color: var(--accent-blue);
+      border-color: #2563eb;
     }
 
     .send-btn {
-      background-color: var(--accent-blue);
+      background-color: #2563eb;
       color: white;
       border: none;
-      padding: 0 14px;
-      border-radius: 6px;
+      padding: 0 16px;
+      border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 4px;
-      font-size: 0.8rem;
+      gap: 6px;
+      font-size: 0.85rem;
       flex-shrink: 0;
+    }
+
+    /* Responsive Mobile / Tablet */
+    @media (max-width: 640px) {
+      .sidebar {
+        width: 200px;
+      }
+      .chat-subtitle {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -414,9 +414,9 @@
         </div>
         <div class="main-title-box" onclick="selectCategory('cat_default')">
           <div class="main-title">
-            <i data-lucide="headphone-off" style="width: 14px; height: 14px; color: #60a5fa;"></i>
+            <i data-lucide="headphone-off" style="width: 16px; height: 16px; color: #60a5fa;"></i>
             <span>ติดต่อผู้สร้างเซิร์ฟเวอร์</span>
-            <i data-lucide="chevron-right" style="width: 12px; height: 12px; color: var(--text-muted); margin-left: auto;"></i>
+            <i data-lucide="chevron-right" style="width: 14px; height: 14px; color: #94a3b8; margin-left: auto;"></i>
           </div>
           <div class="main-subtitle">ช่องทางติดต่อสอบถามและแจ้งปัญหา</div>
         </div>
@@ -427,11 +427,11 @@
         <div class="category-header">
           <span>หมวดหมู่แชทลับ</span>
           <button class="add-cat-btn" onclick="addNewCategory()" title="เพิ่มหมวดหมู่ใหม่">
-            <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+            <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
           </button>
         </div>
         <div class="category-list" id="categoryList">
-          <!-- โหลดหมวดหมู่ JS -->
+          <!-- โหลดหมวดหมู่ด้วย JS -->
         </div>
       </div>
 
@@ -450,18 +450,18 @@
       <div class="chat-header">
         <div class="chat-title-group">
           <div class="avatar-icon">
-            <i data-lucide="user-check" style="width: 16px; height: 16px;"></i>
+            <i data-lucide="user-check" style="width: 18px; height: 18px;"></i>
           </div>
           <div>
             <div class="chat-title-text">
-              <i data-lucide="headphone-off" style="width: 14px; height: 14px; color: #60a5fa;"></i>
+              <i data-lucide="headphone-off" style="width: 16px; height: 16px; color: #60a5fa;"></i>
               <span id="activeCategoryTitle">ติดต่อผู้สร้างเซิร์ฟเวอร์</span>
             </div>
             <div class="chat-subtitle" id="activeCategorySubtitle">หมวดหมู่: ติดต่อผู้สร้างเซิร์ฟเวอร์ (บันทึกข้อมูลแล้ว)</div>
           </div>
         </div>
         <button class="clear-this-btn" onclick="clearCurrentCategoryChat()">
-          <i data-lucide="eraser" style="width: 12px; height: 12px;"></i>
+          <i data-lucide="eraser" style="width: 14px; height: 14px;"></i>
           <span>ล้างข้อมูลแชทนี้</span>
         </button>
       </div>
@@ -475,18 +475,18 @@
       <div class="chat-input-area">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div class="role-selector">
-            <span class="role-label">บทบาท:</span>
+            <span class="role-label">บทบาทการพิมพ์:</span>
             <button class="role-btn active" id="roleMyBtn" onclick="setRole('my')">
-              <i data-lucide="user" style="width: 10px; height: 10px;"></i>
+              <i data-lucide="user" style="width: 12px; height: 12px;"></i>
               <span>ฝั่งเรา</span>
             </button>
             <button class="role-btn" id="roleOtherBtn" onclick="setRole('other')">
-              <i data-lucide="corner-up-left" style="width: 10px; height: 10px;"></i>
+              <i data-lucide="corner-up-left" style="width: 12px; height: 12px;"></i>
               <span>ตอบกลับเรา</span>
             </button>
           </div>
-          <div style="font-size: 0.6rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px;">
-            <i data-lucide="lock" style="width: 10px; height: 10px;"></i>
+          <div style="font-size: 0.65rem; color: #94a3b8; display: flex; align-items: center; gap: 4px;">
+            <i data-lucide="lock" style="width: 11px; height: 11px;"></i>
             <span>บันทึกอัตโนมัติ</span>
           </div>
         </div>
@@ -495,7 +495,7 @@
           <input type="text" id="messageInput" class="chat-input" placeholder="พิมพ์ข้อความที่ต้องการบันทึก..." onkeypress="handleKeyPress(event)">
           <button class="send-btn" onclick="sendMessage()">
             <span>ส่ง</span>
-            <i data-lucide="send" style="width: 12px; height: 12px;"></i>
+            <i data-lucide="send" style="width: 13px; height: 13px;"></i>
           </button>
         </div>
       </div>
@@ -552,7 +552,7 @@
 
         const iconName = cat.icon || 'folder';
         item.innerHTML = `
-          <i data-lucide="${iconName}" style="width: 12px; height: 12px;"></i>
+          <i data-lucide="${iconName}" style="width: 14px; height: 14px;"></i>
           <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(cat.name)}</span>
         `;
         categoryList.appendChild(item);
