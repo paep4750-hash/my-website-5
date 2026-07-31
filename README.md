@@ -413,7 +413,7 @@
         <div class="main-title-box" onclick="selectCategory('cat_default')">
           <div class="main-title">
             <i data-lucide="headphone-off" style="width: 16px; height: 16px; color: #60a5fa;"></i>
-            <span>ติดต่อผู้สร้างเซิร์ฟเวอร์</span>
+            <span>AI เขียนcode beta </span>
             <i data-lucide="chevron-right" style="width: 14px; height: 14px; color: #94a3b8; margin-left: auto;"></i>
           </div>
           <div class="main-subtitle">ช่องทางติดต่อสอบถามและแจ้งปัญหา</div>
