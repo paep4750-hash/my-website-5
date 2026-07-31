@@ -455,7 +455,7 @@
               <i data-lucide="headphone-off" style="width: 16px; height: 16px; color: #60a5fa;"></i>
               <span id="activeCategoryTitle">AI เขียน code beta</span>
             </div>
-            <div class="chat-subtitle" id="activeCategorySubtitle">หมวดหมู่: ติดต่อผู้สร้างเซิร์ฟเวอร์ (บันทึกข้อมูลแล้ว)</div>
+            <div class="chat-subtitle" id="activeCategorySubtitle">หมวดหมู่: AI เขียน code beta (บันทึกข้อมูลแล้ว)</div>
           </div>
         </div>
         <button class="clear-this-btn" onclick="clearCurrentCategoryChat()">
